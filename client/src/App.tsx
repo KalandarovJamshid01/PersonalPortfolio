@@ -7,8 +7,15 @@ import Home from "@/pages/home";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import { useEffect } from "react";
+import { apiRequest } from "@/lib/queryClient";
 
 function Router() {
+  useEffect(() => {
+    // Отправляем информацию о просмотре страницы
+    const path = window.location.pathname || '/';
+    apiRequest("POST", "/api/page-view", { path }).catch(console.error);
+  }, []);
+
   return (
     <Switch>
       <Route path="/" component={Home} />
