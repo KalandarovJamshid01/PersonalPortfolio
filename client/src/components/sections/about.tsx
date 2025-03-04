@@ -7,8 +7,8 @@ export function About() {
     <section id="about" className="py-20 px-4">
       <div className="container mx-auto">
         <SectionHeading 
-          title="About Us" 
-          subtitle="Passionate about creating impactful digital solutions"
+          title="О Компании" 
+          subtitle="Ваш надежный партнер в цифровой трансформации"
         />
         <motion.div 
           className="grid md:grid-cols-2 gap-12 items-center"
@@ -19,17 +19,20 @@ export function About() {
         >
           <div>
             <img 
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800"
-              alt="Team working together"
+              src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=800"
+              alt="Цифровая трансформация бизнеса"
               className="rounded-lg shadow-lg"
             />
           </div>
           <div className="space-y-6">
             <p className="text-lg">
-              We specialize in crafting beautiful and functional websites that help businesses grow and succeed in the digital world.
+              Мы специализируемся на разработке и внедрении комплексных решений для автоматизации бизнес-процессов и цифровой трансформации компаний.
             </p>
             <p className="text-lg">
-              With years of experience in web development and design, we understand what it takes to create online experiences that engage and convert.
+              Наша команда экспертов помогает бизнесу оптимизировать операционную деятельность, внедрять инновационные технологии и повышать эффективность работы.
+            </p>
+            <p className="text-lg">
+              С нами вы получаете не просто IT-решения, а надежного партнера, который поможет вашему бизнесу успешно пройти путь цифровой трансформации.
             </p>
           </div>
         </motion.div>

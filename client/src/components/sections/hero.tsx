@@ -12,17 +12,17 @@ export function Hero() {
     >
       <motion.div variants={fadeInUp}>
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-          Creative Solutions for Your Business
+          Цифровая Трансформация Бизнеса
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Transforming ideas into exceptional digital experiences with modern web solutions and creative design
+          Автоматизация бизнес-процессов, интеграция с государственными системами и внедрение инновационных IT-решений для повышения эффективности вашего бизнеса
         </p>
         <div className="flex gap-4 justify-center">
           <Button size="lg" asChild>
-            <a href="#contact">Get in Touch</a>
+            <a href="#contact">Обсудить проект</a>
           </Button>
           <Button size="lg" variant="outline" asChild>
-            <a href="#services">Our Services</a>
+            <a href="#services">Наши услуги</a>
           </Button>
         </div>
       </motion.div>

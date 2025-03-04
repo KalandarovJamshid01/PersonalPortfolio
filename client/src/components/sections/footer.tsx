@@ -8,7 +8,7 @@ export function Footer() {
         <Separator className="mb-8" />
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2024 Company Name. All rights reserved.
+            © 2024 Ваша Компания. Все права защищены.
           </p>
           <div className="flex gap-4">
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
