@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -7,6 +7,7 @@ export const contacts = pgTable("contacts", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   message: text("message").notNull(),
+  isRead: boolean("is_read").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -22,13 +23,13 @@ export const insertContactSchema = createInsertSchema(contacts).pick({
   email: true,
   message: true,
 }).extend({
-  email: z.string().email("Please enter a valid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters long"),
+  email: z.string().email("Пожалуйста, введите корректный email"),
+  message: z.string().min(10, "Сообщение должно содержать минимум 10 символов"),
 });
 
 export const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  username: z.string().min(1, "Имя пользователя обязательно"),
+  password: z.string().min(6, "Пароль должен содержать минимум 6 символов"),
 });
 
 export type InsertContact = z.infer<typeof insertContactSchema>;

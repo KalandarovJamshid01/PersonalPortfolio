@@ -5,6 +5,8 @@ import { eq } from "drizzle-orm";
 export interface IStorage {
   createContact(contact: InsertContact): Promise<Contact>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getContacts(): Promise<Contact[]>;
+  markContactAsRead(id: number): Promise<Contact | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -22,6 +24,22 @@ export class DatabaseStorage implements IStorage {
       .from(users)
       .where(eq(users.username, username))
       .limit(1);
+    return result;
+  }
+
+  async getContacts(): Promise<Contact[]> {
+    return db
+      .select()
+      .from(contacts)
+      .orderBy(contacts.createdAt, "desc");
+  }
+
+  async markContactAsRead(id: number): Promise<Contact | undefined> {
+    const [result] = await db
+      .update(contacts)
+      .set({ isRead: true })
+      .where(eq(contacts.id, id))
+      .returning();
     return result;
   }
 }
