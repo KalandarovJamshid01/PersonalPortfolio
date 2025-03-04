@@ -11,15 +11,15 @@ export function Hero() {
       animate="visible"
     >
       <motion.div variants={fadeInUp}>
-        <p className="text-xl text-primary mb-4">Softy Software</p>
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <p className="text-xl text-foreground/60 mb-4">Softy Software</p>
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
           Цифровая Трансформация Бизнеса
         </h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Автоматизация бизнес-процессов, интеграция с государственными системами и внедрение инновационных IT-решений для повышения эффективности вашего бизнеса
         </p>
         <div className="flex gap-4 justify-center">
-          <Button size="lg" asChild>
+          <Button size="lg" variant="default" asChild>
             <a href="#contact">Обсудить проект</a>
           </Button>
           <Button size="lg" variant="outline" asChild>

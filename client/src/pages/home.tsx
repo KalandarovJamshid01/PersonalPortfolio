@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Services } from "@/components/sections/services";
@@ -6,12 +7,15 @@ import { Footer } from "@/components/sections/footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <Hero />
-      <About />
-      <Services />
-      <Contact />
-      <Footer />
-    </main>
+    <>
+      <Navbar />
+      <main className="min-h-screen pt-16">
+        <Hero />
+        <About />
+        <Services />
+        <Contact />
+        <Footer />
+      </main>
+    </>
   );
 }
