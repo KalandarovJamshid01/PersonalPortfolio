@@ -11,7 +11,7 @@ export function Hero() {
       animate="visible"
     >
       <motion.div variants={fadeInUp}>
-        <p className="text-xl text-foreground/60 mb-4">Softy Software</p>
+        <p className="text-2xl md:text-3xl font-semibold text-foreground/60 mb-4">Softy Software</p>
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
           Цифровая Трансформация Бизнеса
         </h1>

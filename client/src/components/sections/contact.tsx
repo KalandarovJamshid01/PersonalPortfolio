@@ -33,16 +33,16 @@ export function Contact() {
       apiRequest("POST", "/api/contact", data),
     onSuccess: () => {
       toast({
-        title: "Message sent!",
-        description: "We'll get back to you soon.",
+        title: "Сообщение отправлено!",
+        description: "Мы свяжемся с вами в ближайшее время.",
       });
       form.reset();
     },
     onError: () => {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: "Ошибка",
+        description: "Что-то пошло не так. Пожалуйста, попробуйте еще раз.",
       });
     },
   });
@@ -51,10 +51,10 @@ export function Contact() {
     <section id="contact" className="py-20 px-4">
       <div className="container mx-auto max-w-xl">
         <SectionHeading 
-          title="Get in Touch" 
-          subtitle="Let's discuss your project"
+          title="Связаться с нами" 
+          subtitle="Обсудим ваш проект"
         />
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit((data) => mutation.mutate(data))} className="space-y-6">
             <FormField
@@ -62,15 +62,15 @@ export function Contact() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Имя</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your name" {...field} />
+                    <Input placeholder="Ваше имя" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="email"
@@ -84,16 +84,16 @@ export function Contact() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="message"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message</FormLabel>
+                  <FormLabel>Сообщение</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="Tell us about your project..."
+                      placeholder="Расскажите о вашем проекте..."
                       className="min-h-[150px]"
                       {...field}
                     />
@@ -108,7 +108,7 @@ export function Contact() {
               className="w-full"
               disabled={mutation.isPending}
             >
-              {mutation.isPending ? "Sending..." : "Send Message"}
+              {mutation.isPending ? "Отправка..." : "Отправить сообщение"}
             </Button>
           </form>
         </Form>
