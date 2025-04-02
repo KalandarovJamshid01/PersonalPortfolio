@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "db:setup": "node setup-mysql.js"
+  }
+}

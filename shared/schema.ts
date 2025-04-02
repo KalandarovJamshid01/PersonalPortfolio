@@ -1,35 +1,35 @@
-import { pgTable, text, serial, timestamp, boolean, integer } from "drizzle-orm/pg-core";
+import { mysqlTable, varchar, text, int, boolean, timestamp, mysqlEnum } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const contacts = pgTable("contacts", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
+export const contacts = mysqlTable("contacts", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
   message: text("message").notNull(),
   isRead: boolean("is_read").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const content = pgTable("content", {
-  id: serial("id").primaryKey(),
-  section: text("section").notNull(), // hero, about, services
-  key: text("key").notNull(), // title, subtitle, description
+export const content = mysqlTable("content", {
+  id: int("id").primaryKey().autoincrement(),
+  section: varchar("section", { length: 100 }).notNull(), // hero, about, services
+  key: varchar("key", { length: 100 }).notNull(), // title, subtitle, description
   value: text("value").notNull(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const pageViews = pgTable("page_views", {
-  id: serial("id").primaryKey(),
-  path: text("path").notNull(),
-  count: integer("count").default(0),
+export const pageViews = mysqlTable("page_views", {
+  id: int("id").primaryKey().autoincrement(),
+  path: varchar("path", { length: 255 }).notNull(),
+  count: int("count").default(0),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const users = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
+  username: varchar("username", { length: 100 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
