@@ -7,7 +7,7 @@ interface LogoProps {
 export function Logo({ className }: LogoProps) {
   return (
     <img 
-      src="/assets/softy-1.jpg"
+      src="/assets/softy-logo.png"
       alt="Softy Software"
       className={cn("h-8 w-auto", className)}
     />
