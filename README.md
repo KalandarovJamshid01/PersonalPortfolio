@@ -74,4 +74,4 @@ The application uses the following database tables:
 
 - The application uses MySQL for data storage
 - Drizzle ORM is used for database interactions
-- TanStack Query handles data fetching on the frontend
+- TanStack Query handles data fetching on the frontend"# PersonalPortfolio" 
