@@ -1,23 +1,24 @@
-import { useEffect } from "react";
-import { useLocation } from "wouter";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import type { Contact, Content, PageView } from "@shared/schema";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
-import { Check, Trash2, BarChart3 } from "lucide-react";
+import { useEffect } from 'react';
+import { useLocation } from 'wouter';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { apiRequest } from '@/lib/queryClient';
+import type { Contact, Content, PageView } from '@shared/schema';
+
+import { Check, Trash2, BarChart3 } from 'lucide-react';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -26,80 +27,105 @@ export default function AdminDashboard() {
 
   // Проверка аутентификации
   const { isLoading: authLoading, isError: authError } = useQuery({
-    queryKey: ["/api/auth/status"],
+    queryKey: ['/api/auth/status'],
     retry: false,
   });
 
   // Получение данных
   const { data: contacts, isLoading: contactsLoading } = useQuery<Contact[]>({
-    queryKey: ["/api/admin/contacts"],
+    queryKey: ['/api/admin/contacts'],
     retry: false,
   });
 
   const { data: content, isLoading: contentLoading } = useQuery<Content[]>({
-    queryKey: ["/api/admin/content"],
+    queryKey: ['/api/admin/content'],
     retry: false,
   });
 
-  const { data: statistics, isLoading: statisticsLoading } = useQuery<PageView[]>({
-    queryKey: ["/api/admin/statistics"],
+  const { data: statistics, isLoading: statisticsLoading } = useQuery<
+    PageView[]
+  >({
+    queryKey: ['/api/admin/statistics'],
     retry: false,
   });
 
   // Мутации
   const logoutMutation = useMutation({
-    mutationFn: () => apiRequest("POST", "/api/auth/logout"),
+    mutationFn: () => apiRequest('POST', '/api/auth/logout'),
     onSuccess: () => {
       toast({
-        title: "Успешный выход",
-        description: "Вы вышли из системы",
+        title: 'Успешный выход',
+        description: 'Вы вышли из системы',
       });
-      setLocation("/admin/login");
+      setLocation('/admin/login');
     },
   });
 
   const markAsReadMutation = useMutation({
-    mutationFn: (id: number) => apiRequest("POST", `/api/admin/contacts/${id}/read`),
+    mutationFn: (id: number) =>
+      apiRequest('POST', `/api/admin/contacts/${id}/read`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/contacts"] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/contacts'] });
       toast({
-        title: "Готово",
-        description: "Сообщение отмечено как прочитанное",
+        title: 'Готово',
+        description: 'Сообщение отмечено как прочитанное',
       });
     },
   });
 
   const deleteContactMutation = useMutation({
-    mutationFn: (id: number) => apiRequest("DELETE", `/api/admin/contacts/${id}`),
+    mutationFn: (id: number) =>
+      apiRequest('DELETE', `/api/admin/contacts/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/contacts"] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/contacts'] });
       toast({
-        title: "Готово",
-        description: "Сообщение удалено",
+        title: 'Готово',
+        description: 'Сообщение удалено',
       });
     },
   });
 
   const updateContentMutation = useMutation({
     mutationFn: ({ id, value }: { id: number; value: string }) =>
-      apiRequest("PATCH", `/api/admin/content/${id}`, { value }),
+      apiRequest('PATCH', `/api/admin/content/${id}`, { value }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/content"] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/content'] });
       toast({
-        title: "Готово",
-        description: "Контент обновлен",
+        title: 'Готово',
+        description: 'Контент обновлен',
       });
     },
   });
 
   useEffect(() => {
     if (authError) {
-      setLocation("/admin/login");
+      setLocation('/admin/login');
     }
   }, [authError, setLocation]);
 
   if (authLoading || contactsLoading || contentLoading || statisticsLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Загрузка...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Загрузка...
+      </div>
+    );
+  }
+  function formatSafeDate(dateValue, formatString, options = {}) {
+    if (!dateValue) return '';
+
+    try {
+      // Handle the date value, convert to Date object if needed
+      const date = new Date(dateValue);
+
+      // Check if date is valid
+      if (isNaN(date.getTime())) return '';
+
+      // Format using date-fns
+      return format(date, formatString, options);
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '';
+    }
   }
 
   return (
@@ -107,12 +133,12 @@ export default function AdminDashboard() {
       <nav className="border-b">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Админ-панель</h1>
-          <Button 
+          <Button
             variant="outline"
             onClick={() => logoutMutation.mutate()}
             disabled={logoutMutation.isPending}
           >
-            {logoutMutation.isPending ? "Выход..." : "Выйти"}
+            {logoutMutation.isPending ? 'Выход...' : 'Выйти'}
           </Button>
         </div>
       </nav>
@@ -136,25 +162,35 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="divide-y">
                   {contacts?.length === 0 ? (
-                    <p className="py-4 text-muted-foreground">Нет новых сообщений</p>
+                    <p className="py-4 text-muted-foreground">
+                      Нет новых сообщений
+                    </p>
                   ) : (
                     contacts?.map((contact) => (
                       <div key={contact.id} className="py-4 space-y-2">
                         <div className="flex items-start justify-between">
                           <div>
                             <h3 className="font-medium">{contact.name}</h3>
-                            <p className="text-sm text-muted-foreground">{contact.email}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {contact.email}
+                            </p>
                           </div>
                           <div className="flex items-center gap-2">
                             <span className="text-sm text-muted-foreground">
-                              {format(new Date(contact.createdAt), "d MMMM yyyy, HH:mm", { locale: ru })}
+                              {formatSafeDate(
+                                contact.created_at,
+                                'd MMMM yyyy, HH:mm',
+                                { locale: ru }
+                              )}
                             </span>
                             <div className="flex gap-2">
                               {!contact.isRead && (
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => markAsReadMutation.mutate(contact.id)}
+                                  onClick={() =>
+                                    markAsReadMutation.mutate(contact.id)
+                                  }
                                   disabled={markAsReadMutation.isPending}
                                 >
                                   <Check className="w-4 h-4 mr-1" />
@@ -165,7 +201,11 @@ export default function AdminDashboard() {
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => {
-                                  if (window.confirm("Вы уверены, что хотите удалить это сообщение?")) {
+                                  if (
+                                    window.confirm(
+                                      'Вы уверены, что хотите удалить это сообщение?'
+                                    )
+                                  ) {
                                     deleteContactMutation.mutate(contact.id);
                                   }
                                 }}
@@ -198,9 +238,13 @@ export default function AdminDashboard() {
                   {content?.map((item) => (
                     <div key={item.id} className="space-y-2">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium capitalize">{item.section}</span>
+                        <span className="font-medium capitalize">
+                          {item.section}
+                        </span>
                         <span className="text-muted-foreground">→</span>
-                        <span className="text-muted-foreground capitalize">{item.key}</span>
+                        <span className="text-muted-foreground capitalize">
+                          {item.key}
+                        </span>
                       </div>
                       {item.key === 'title' || item.key === 'subtitle' ? (
                         <Input
@@ -245,12 +289,17 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="space-y-4">
                   {statistics?.map((stat) => (
-                    <div key={stat.id} className="flex items-center justify-between">
+                    <div
+                      key={stat.id}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex items-center gap-2">
                         <BarChart3 className="w-4 h-4 text-muted-foreground" />
                         <span className="font-medium">{stat.path}</span>
                       </div>
-                      <span className="text-muted-foreground">{stat.count} просмотров</span>
+                      <span className="text-muted-foreground">
+                        {stat.count} просмотров
+                      </span>
                     </div>
                   ))}
                 </div>
