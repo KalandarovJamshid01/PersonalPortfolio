@@ -1,6 +1,17 @@
-import { contacts, content, pageViews, users, type Contact, type InsertContact, type User, type Content, type InsertContent, type PageView } from "@shared/schema";
-import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import {
+  contacts,
+  content,
+  pageViews,
+  users,
+  type Contact,
+  type InsertContact,
+  type User,
+  type Content,
+  type InsertContent,
+  type PageView,
+} from '@shared/schema';
+import { db } from './db';
+import { eq, desc } from 'drizzle-orm';
 
 export interface IStorage {
   // Контакты
@@ -24,18 +35,12 @@ export interface IStorage {
 export class DatabaseStorage implements IStorage {
   // Контакты
   async createContact(contact: InsertContact): Promise<Contact> {
-    const [result] = await db
-      .insert(contacts)
-      .values(contact)
-      .returning();
+    const [result] = await db.insert(contacts).values(contact).returning();
     return result;
   }
 
   async getContacts(): Promise<Contact[]> {
-    return db
-      .select()
-      .from(contacts)
-      .orderBy(desc(contacts.createdAt));
+    return db.select().from(contacts).orderBy(desc(contacts.createdAt));
   }
 
   async markContactAsRead(id: number): Promise<Contact | undefined> {
@@ -57,20 +62,27 @@ export class DatabaseStorage implements IStorage {
 
   // Пользователи
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [result] = await db
-      .select()
-      .from(users)
-      .where(eq(users.username, username))
-      .limit(1);
-    return result;
+    try {
+      // For MySQL with Drizzle, we need to modify the query structure
+      const result = await db
+        .select()
+        .from(users)
+        .where(eq(users.username, username));
+
+      // Check if we got any results
+      if (result && result.length > 0) {
+        return result[0];
+      }
+      return undefined;
+    } catch (error) {
+      console.error('Database error in getUserByUsername:', error);
+      return undefined;
+    }
   }
 
   // Контент
   async getContent(): Promise<Content[]> {
-    return db
-      .select()
-      .from(content)
-      .orderBy(content.section, content.key);
+    return db.select().from(content).orderBy(content.section, content.key);
   }
 
   async updateContent(id: number, value: string): Promise<Content | undefined> {
@@ -93,9 +105,9 @@ export class DatabaseStorage implements IStorage {
     if (existing) {
       const [result] = await db
         .update(pageViews)
-        .set({ 
+        .set({
           count: existing.count + 1,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         })
         .where(eq(pageViews.id, existing.id))
         .returning();
@@ -110,10 +122,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getPageViews(): Promise<PageView[]> {
-    return db
-      .select()
-      .from(pageViews)
-      .orderBy(desc(pageViews.count));
+    return db.select().from(pageViews).orderBy(desc(pageViews.count));
   }
 }
 
